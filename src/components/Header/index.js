@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import Logo from 'assets/images/aptomingoslogo.png'
 import Layout from 'components/Layout'
 import AptomingosLogo from 'assets/images/aptomingoslogo.png'
+import ConnectButton from 'components/WalletButton'
+import { useLocation } from 'react-router-dom'
 import { BiMenuAltRight } from 'react-icons/bi'
 import { MdOutlineClose } from 'react-icons/md'
 import { Link } from 'react-scroll'
@@ -9,6 +11,9 @@ import { Transition } from '@headlessui/react'
 
 const Index = () => {
   const [isOpen, setIsOpen] = useState(false)
+  const location = useLocation()
+  const { pathname } = location
+  const name = pathname.split('/').slice(1)[0];
 
   return (
     <div>
@@ -37,6 +42,11 @@ const Index = () => {
               <a href='/' className='duration-300 hover:bg-[#16373d] py-2 rounded-md px-2'>
                 <li className='cursor-pointer'>
                   Home
+                </li>
+              </a>
+              <a href='/marketplace' className='duration-300 hover:bg-[#16373d] py-2 rounded-md px-2'>
+                <li className='cursor-pointer'>
+                  Marketplace
                 </li>
               </a>
               <a href='/code' className='duration-300 hover:bg-[#16373d] py-2 rounded-md px-2'>
@@ -81,31 +91,44 @@ const Index = () => {
                   Home
                 </li>
               </a>
-              <a href='/code'>
+              <a href='/marketplace'>
                 <li className='cursor-pointer'>
-                  The Code
+                  Marketplace
                 </li>
               </a>
-              <a href='https://fischermingo.gitbook.io/aptomingos-whitepaper/' target='_blank' rel="noreferrer">
-                <li className='cursor-pointer'>
-                  Whitepaper
-                </li>
-              </a>
-              <Link to="roadmapComponent" spy={true} smooth={true} offset={50} duration={500} >
-                <li className='cursor-pointer'>
-                  Roadmap
-                </li>
-              </Link>
-              <Link to="financialComponent" spy={true} smooth={true} offset={50} duration={500} >
-                <li className='cursor-pointer'>
-                  Financials
-                </li>
-              </Link>
-              <Link to="teamComponent" spy={true} smooth={true} offset={50} duration={500} >
-                <li className='cursor-pointer'>
-                  Team
-                </li>
-              </Link>
+              {name !== 'marketplace' ? (
+                <div className='flex gap-8 items-center'>
+                  <a href='/code'>
+                    <li className='cursor-pointer'>
+                      The Code
+                    </li>
+                  </a>
+                  <a href='https://fischermingo.gitbook.io/aptomingos-whitepaper/' target='_blank' rel="noreferrer">
+                    <li className='cursor-pointer'>
+                      Whitepaper
+                    </li>
+                  </a>
+                  <Link to="roadmapComponent" spy={true} smooth={true} offset={50} duration={500} >
+                    <li className='cursor-pointer'>
+                      Roadmap
+                    </li>
+                  </Link>
+                  <Link to="financialComponent" spy={true} smooth={true} offset={50} duration={500} >
+                    <li className='cursor-pointer'>
+                      Financials
+                    </li>
+                  </Link>
+                  <Link to="teamComponent" spy={true} smooth={true} offset={50} duration={500} >
+                    <li className='cursor-pointer'>
+                      Team
+                    </li>
+                  </Link>
+                </div>
+              ) : (
+                <div>
+                  <ConnectButton />
+                </div>
+              )}
             </ul>
           </div>
           <div className='flex md:hidden' onClick={() => setIsOpen(!isOpen)}>
