@@ -125,8 +125,15 @@ const Index = () => {
                   </Link>
                 </div>
               ) : (
-                <div>
-                  <ConnectButton />
+                <div className='flex gap-8 items-center'>
+                  <a href='/marketplace/wallet'>
+                    <li className='cursor-pointer'>
+                      Wallet
+                    </li>
+                  </a>
+                  <div>
+                    <ConnectButton />
+                  </div>
                 </div>
               )}
             </ul>

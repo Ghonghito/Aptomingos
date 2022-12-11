@@ -5,6 +5,7 @@ import TheCode from 'components/TheCode'
 import Footer from 'components/Footer'
 import Marketplace from 'Pages/Marketplace'
 import DetailView from 'Pages/Marketplace/DetailView'
+import Wallet from 'Pages/Wallet'
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path='/code' element={<TheCode />} />
           <Route path='/marketplace' element={<Marketplace />} />
           <Route path='/marketplace/:id' element={<DetailView />} />
+          <Route path='/marketplace/wallet' element={<Wallet />} />
         </Routes>
         <Footer />
       </BrowserRouter>

@@ -83,3 +83,10 @@ export const getMingoMarketEvent = async (id) => {
     .catch(() => 'error')
   return json
 }
+
+export const getAddressNFTs = async (address) => {
+  const json = await axios(`https://api-v1.topaz.so/api/profile-data?owner=${address}`)
+    .then((response) => response)
+    .catch(() => 'error');
+  return json
+}
