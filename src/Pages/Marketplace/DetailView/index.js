@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Layout from 'components/Layout'
 import APTLogo from 'assets/images/aptlogo.svg'
+import LoadingAnimation from 'components/LoadingAnimation'
 import { useLocation } from 'react-router-dom'
 import { getAPTPrice } from 'utils/API/CoinGeckoAPI'
 import { getMingoDetail, getMingoFloor, getMoreMingos, getMingoMarketEvent } from 'utils/API/topaz'
@@ -183,7 +184,7 @@ const Index = () => {
             )}
           </div>
         ) : (
-          <p>დაელოდე</p>
+          <LoadingAnimation />
         )}
       </Layout>
     </div>

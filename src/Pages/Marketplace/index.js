@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { getListings, getMingosOverview, getListedMingosCount } from 'utils/API/topaz'
 import Layout from 'components/Layout'
 import Card from 'components/Marketplace/Card'
+import LoadingAnimation from 'components/LoadingAnimation'
 import { getAPTPrice } from 'utils/API/CoinGeckoAPI'
 import { shortAddress } from 'utils/Helpers'
 
@@ -87,7 +88,7 @@ const Index = () => {
             ) : null}
           </div>
         ) : (
-          <p>დაელოდე</p>
+          <LoadingAnimation />
         )}
       </Layout>
     </div>

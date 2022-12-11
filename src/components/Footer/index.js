@@ -6,22 +6,24 @@ import { FaDiscord } from 'react-icons/fa'
 
 const index = () => {
   return (
-    <div>
-      <Layout>
-        <div className='flex items-center justify-between'>
-          <a href='/'>
-            <img src={Logo} alt='logo' className='w-[350px]' />
-          </a>
-          <div className='flex items-center gap-5'>
-            <a href='https://twitter.com/Aptomingos' target='_blank' rel="noreferrer">
-              <BsTwitter className='text-white text-3xl' />
+    <div className='mt-auto'>
+      <div className='bg-black py-12 mt-12'>
+        <Layout>
+          <div className='flex items-center justify-between'>
+            <a href='/'>
+              <img src={Logo} alt='logo' className='w-[350px]' />
             </a>
-            <a href='https://discord.gg/aptomingos' target='_blank' rel="noreferrer">
-              <FaDiscord className='text-white text-3xl' />
-            </a>
+            <div className='flex items-center gap-5'>
+              <a href='https://twitter.com/Aptomingos' target='_blank' rel="noreferrer">
+                <BsTwitter className='text-white text-3xl' />
+              </a>
+              <a href='https://discord.gg/aptomingos' target='_blank' rel="noreferrer">
+                <FaDiscord className='text-white text-3xl' />
+              </a>
+            </div>
           </div>
-        </div>
-      </Layout>
+        </Layout>
+      </div>
     </div>
   )
 }

@@ -8,7 +8,7 @@ import DetailView from 'Pages/Marketplace/DetailView'
 
 function App() {
   return (
-    <div className="min-h-screen bg-[url('assets/images/background.png')] bg-cover bg-no-repeat ">
+    <div className="flex flex-col min-h-screen relative bg-[url('assets/images/background.png')] bg-cover bg-no-repeat ">
       <BrowserRouter>
         <div className='py-5'>
           <Header />
@@ -19,10 +19,8 @@ function App() {
           <Route path='/marketplace' element={<Marketplace />} />
           <Route path='/marketplace/:id' element={<DetailView />} />
         </Routes>
-      </BrowserRouter>
-      <div className='bg-black py-12 mt-12  left-0 bottom-0 right-0'>
         <Footer />
-      </div>
+      </BrowserRouter>
     </div>
   );
 }
