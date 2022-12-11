@@ -46,7 +46,7 @@ export const getMingoDetail = async (id) => {
   const data = {
     property_version: 0,
     collection_slug: "Aptomingos-c0e3fbf8ae",
-    token_name: `Aptomingo #${id}`
+    token_name: `${id}`
   }
   const json = await axios.post('https://api-v1.topaz.so/api/asset-view-p', data)
     .then(response => response)
@@ -76,7 +76,7 @@ export const getMoreMingos = async () => {
 
 export const getMingoMarketEvent = async (id) => {
   const data = {
-    token_id: `0xc0e3fbf8ae61056d66ce624d71ccf1888f879355cc4e364ef117249b5e3160a8::Aptomingos::Aptomingo #${id}::0`
+    token_id: `0xc0e3fbf8ae61056d66ce624d71ccf1888f879355cc4e364ef117249b5e3160a8::Aptomingos::${id}::0`
   }
   const json = await axios.post('https://api-v1.topaz.so/api/market-events', data)
     .then(response => response)

@@ -14,10 +14,20 @@ const Index = () => {
   const [moreMingos, setMoreMingos] = useState([])
   const [aptPrice, setAptPrice] = useState(0)
   const [isLoading, setIsLoading] = useState(Boolean)
+  const [isWalletConnected, setIsWalletConnected] = useState(Boolean)
   const location = useLocation()
-  const { hash } = location
+  const { pathname, hash } = location
+  const mingo = pathname.split('/').slice(2)[0];
 
   const getDetails = async () => {
+    var mingoname = ''
+    if (hash !== '') {
+      mingoname = `${String(mingo).replace('%20', ' ')}${hash}`
+      console.log(mingoname)
+    } else {
+      mingoname = `${String(mingo).replace('%20', ' ')}`
+      console.log(mingoname)
+    }
     setIsLoading(true)
     setMingoFloor(0)
     setMingoData([])
@@ -26,8 +36,9 @@ const Index = () => {
     const aptosPrice = await getAPTPrice()
     setAptPrice(aptosPrice.data.aptos.usd)
     const getFloor = await getMingoFloor()
-    const data = await getMingoDetail(String(hash).replace('#', ''))
-    const getMingoEvents = await getMingoMarketEvent(String(hash).replace('#', ''))
+    const data = await getMingoDetail(mingoname)
+    console.log(data)
+    const getMingoEvents = await getMingoMarketEvent(mingoname)
     const getMingosMore = await getMoreMingos()
     setMingoFloor(getFloor.data.data.floor / 10 ** 8)
     setMingoData(data.data.data)
@@ -66,6 +77,13 @@ const Index = () => {
 
   useEffect(() => {
     getDetails()
+    // eslint-disable-next-line
+    const checkMartian = async () => {
+      await window.martian.connect()
+      const connected = await window.martian.isConnected()
+      setIsWalletConnected(connected)
+    }
+    checkMartian()
     // eslint-disable-next-line
   }, [hash])
 
@@ -113,7 +131,10 @@ const Index = () => {
                           <img src={APTLogo} alt='APTLOGO' className='w-8' />
                           <p className='text-white text-2xl font-bold'>{mingoData.price / 10 ** 8} (${Number((Number(mingoData.price) / 10 ** 8) * Number(aptPrice)).toLocaleString('en-US')})</p>
                         </div>
-                        <button onClick={() => buyMingo(mingoData.seller, mingoData.price)} className='bg-green-500 px-5 py-2 rounded-lg duration-300 hover:bg-green-700 mt-3 text-white w-full md:w-[150px]'>Buy Now</button>
+                        {isWalletConnected ? (
+                          <button onClick={() => buyMingo(mingoData.seller, mingoData.price)} className='bg-green-500 px-5 py-2 rounded-lg duration-300 hover:bg-green-700 mt-3 text-white w-full md:w-[150px]'>Buy Now</button>
+                        ) : null}
+
                         <div className='mt-3'>
                           <p className='text-zinc-500 text-sm font-bold'>8% Creator Royalty</p>
                           <p className='text-zinc-500 text-sm font-bold'>2.5% Marketplace Fee</p>
