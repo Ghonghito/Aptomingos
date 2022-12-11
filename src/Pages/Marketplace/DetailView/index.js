@@ -18,9 +18,9 @@ const Index = () => {
   const location = useLocation()
   const { pathname, hash } = location
   const mingo = pathname.split('/').slice(2)[0];
-
+  var mingoname = ''
   const getDetails = async () => {
-    var mingoname = ''
+
     if (hash !== '') {
       mingoname = `${String(mingo).replace('%20', ' ')}${hash}`
       console.log(mingoname)
@@ -122,7 +122,7 @@ const Index = () => {
                         </div>
                       </div>
                       <div className='mt-3'>
-                        <p className='text-white text-xl md:text-4xl font-bold'>Aptomingos {hash}</p>
+                        <p className='text-white text-xl md:text-4xl font-bold'>{mingoData.token_name}</p>
                         <p className='text-zinc-500 text-sm font-bold mt-3'>Owned by {shortAddress(mingoData.seller, 6)}</p>
                       </div>
                       <div className='border-[1px] border-zinc-600 p-3 rounded-lg mt-3'>
