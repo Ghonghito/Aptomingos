@@ -127,57 +127,66 @@ const Index = () => {
                       </div>
                       <div className='border-[1px] border-zinc-600 p-3 rounded-lg mt-3'>
                         <p className='text-zinc-300 text-lg font-bold'>Current Price</p>
-                        <div className='flex items-center gap-2 mt-3'>
-                          <img src={APTLogo} alt='APTLOGO' className='w-8' />
-                          <p className='text-white text-2xl font-bold'>{mingoData.price / 10 ** 8} (${Number((Number(mingoData.price) / 10 ** 8) * Number(aptPrice)).toLocaleString('en-US')})</p>
-                        </div>
-                        {isWalletConnected ? (
-                          <button onClick={() => buyMingo(mingoData.seller, mingoData.price)} className='bg-green-500 px-5 py-2 rounded-lg duration-300 hover:bg-green-700 mt-3 text-white w-full md:w-[150px]'>Buy Now</button>
-                        ) : null}
-
+                        {mingoData.is_listed ? (
+                          <div>
+                            <div className='flex items-center gap-2 mt-3'>
+                              <img src={APTLogo} alt='APTLOGO' className='w-8' />
+                              <p className='text-white text-2xl font-bold'>{mingoData.price / 10 ** 8} (${Number((Number(mingoData.price) / 10 ** 8) * Number(aptPrice)).toLocaleString('en-US')})</p>
+                            </div>
+                            {isWalletConnected ? (
+                              <button onClick={() => buyMingo(mingoData.seller, mingoData.price)} className='bg-green-500 px-5 py-2 rounded-lg duration-300 hover:bg-green-700 mt-3 text-white w-full md:w-[150px]'>Buy Now</button>
+                            ) : null}
+                          </div>
+                        ) : (
+                          <p className='text-2xl text-zinc-500 font-semibold'>Unlisted</p>
+                        )}
                         <div className='mt-3'>
                           <p className='text-zinc-500 text-sm font-bold'>8% Creator Royalty</p>
                           <p className='text-zinc-500 text-sm font-bold'>2.5% Marketplace Fee</p>
                         </div>
                       </div>
-                      {Object.keys(mingoEvents).length > 0 && (
-                        <div className='border-[1px] border-zinc-600 p-3 rounded-lg mt-3 h-[250px] overflow-y-auto'>
-                          <p className='text-white'>Latest Activity</p>
-                          {mingoEvents.map((x, index) => (
-                            <div key={index}>
-                              {x.type === 'ListEvent' && (
-                                <div className='py-1'>
-                                  <div className='border-[1px] border-zinc-800 p-2 rounded-lg flex items-center gap-2'>
-                                    <p className='text-zinc-400'>{shortAddress(x.data.seller, 5)} Listed for</p>
-                                    <div className='flex items-center gap-1'>
-                                      <img src={APTLogo} alt='APTLOGO' className='w-5' />
-                                      <p className='text-zinc-400'>{Number(x.data.price) / 10 ** 8} APT</p>
+                      <div className='border-[1px] border-zinc-600 p-3 rounded-lg mt-3 max-h-[250px] overflow-y-auto'>
+                        <p className='text-white'>Latest Activity</p>
+                        {Object.keys(mingoEvents).length > 0 ? (
+                          <div>
+                            {mingoEvents.map((x, index) => (
+                              <div key={index}>
+                                {x.type === 'ListEvent' && (
+                                  <div className='py-1'>
+                                    <div className='border-[1px] border-zinc-800 p-2 rounded-lg flex items-center gap-2'>
+                                      <p className='text-zinc-400'>{shortAddress(x.data.seller, 5)} Listed for</p>
+                                      <div className='flex items-center gap-1'>
+                                        <img src={APTLogo} alt='APTLOGO' className='w-5' />
+                                        <p className='text-zinc-400'>{Number(x.data.price) / 10 ** 8} APT</p>
+                                      </div>
                                     </div>
                                   </div>
-                                </div>
-                              )}
-                              {x.type === 'DelistEvent' && (
-                                <div className='py-1'>
-                                  <div className='border-[1px] border-zinc-800 p-2 rounded-lg'>
-                                    <p className='text-zinc-400'>{shortAddress(x.data.seller, 5)} Delisted 💎🦩</p>
-                                  </div>
-                                </div>
-                              )}
-                              {x.type === 'BuyEvent' && (
-                                <div className='py-1'>
-                                  <div className='border-[1px] border-zinc-800 p-2 rounded-lg flex items-center gap-2'>
-                                    <p className='text-zinc-400'>{shortAddress(x.data.seller, 5)} Bought for</p>
-                                    <div className='flex items-center gap-1'>
-                                      <img src={APTLogo} alt='APTLOGO' className='w-5' />
-                                      <p className='text-zinc-400'>{Number(x.data.price) / 10 ** 8} APT</p>
+                                )}
+                                {x.type === 'DelistEvent' && (
+                                  <div className='py-1'>
+                                    <div className='border-[1px] border-zinc-800 p-2 rounded-lg'>
+                                      <p className='text-zinc-400'>{shortAddress(x.data.seller, 5)} Delisted 💎🦩</p>
                                     </div>
                                   </div>
-                                </div>
-                              )}
-                            </div>
-                          ))}
-                        </div>
-                      )}
+                                )}
+                                {x.type === 'BuyEvent' && (
+                                  <div className='py-1'>
+                                    <div className='border-[1px] border-zinc-800 p-2 rounded-lg flex items-center gap-2'>
+                                      <p className='text-zinc-400'>{shortAddress(x.data.buyer, 5)} Bought for</p>
+                                      <div className='flex items-center gap-1'>
+                                        <img src={APTLogo} alt='APTLOGO' className='w-5' />
+                                        <p className='text-zinc-400'>{Number(x.data.price) / 10 ** 8} APT</p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          <p className='text-2xl text-zinc-500 font-semibold'>No activity yet</p>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
