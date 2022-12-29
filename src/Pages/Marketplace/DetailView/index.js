@@ -1,26 +1,33 @@
-import React, { useState, useEffect } from 'react'
-import Layout from 'components/Layout'
+import { useWallet } from "@aptos-labs/wallet-adapter-react"
+import { AptosClient } from 'aptos'
 import APTLogo from 'assets/images/aptlogo.svg'
+import Layout from 'components/Layout'
 import LoadingAnimation from 'components/LoadingAnimation'
+import { useToast } from 'hooks/useToast'
+import { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { getAPTPrice } from 'utils/API/CoinGeckoAPI'
-import { getMingoDetail, getMingoFloor, getMoreMingos, getMingoMarketEvent } from 'utils/API/topaz'
+import { getMingoDetail, getMingoFloor, getMingoMarketEvent, getMoreMingos } from 'utils/API/topaz'
 import { shortAddress } from 'utils/Helpers'
 
 const Index = () => {
+  const { connected, signAndSubmitTransaction } = useWallet()
   const [mingoData, setMingoData] = useState([])
   const [mingoFloor, setMingoFloor] = useState(0)
   const [mingoEvents, setMingoEvents] = useState([])
   const [moreMingos, setMoreMingos] = useState([])
   const [aptPrice, setAptPrice] = useState(0)
   const [isLoading, setIsLoading] = useState(Boolean)
-  const [isWalletConnected, setIsWalletConnected] = useState(Boolean)
   const location = useLocation()
   const { pathname, hash } = location
   const mingo = pathname.split('/').slice(2)[0];
   var mingoname = ''
-  const getDetails = async () => {
 
+  const aptosClient = new AptosClient('https://fullnode.mainnet.aptoslabs.com/v1', { WITH_CREDENTIALS: false, })
+
+  const toast = useToast()
+
+  const getDetails = async () => {
     if (hash !== '') {
       mingoname = `${String(mingo).replace('%20', ' ')}${hash}`
       console.log(mingoname)
@@ -48,8 +55,6 @@ const Index = () => {
   }
 
   const buyMingo = async (seller, price) => {
-    const response = await window.martian.connect();
-    const sender = response.address;
     const payload = {
       function: "0x2c7bccf7b31baf770fdbcc768d9e9cb3d87805e255355df5db32ac9a669010a2::marketplace_v2::buy",
       type_arguments: [
@@ -66,24 +71,25 @@ const Index = () => {
       ],
       "type": "entry_function_payload"
     }
-    const transaction = await window.martian.generateTransaction(sender, payload);
-    const txnHash = await window.martian.signAndSubmitTransaction(transaction)
-    const data = await window.martian.getTransaction(txnHash);
-    console.log(data)
-    /* if (data.success === true) {
-      toast('success', 'ტრანზაქცია დადასტურდა!', 'დაიმინტა')
-    } */
+    try {
+      const response = await signAndSubmitTransaction(payload);
+      const txResult = await aptosClient.waitForTransactionWithResult(response.hash);
+      if (txResult.success === true) {
+        toast('success', 'Transaction Confirmd', '', response.hash)
+      } else {
+        toast('error', 'oh no', txResult.success, response.hash)
+      }
+    } catch (error) {
+      if (error === 'The user rejected the request') {
+        toast('error', 'oh no', 'The user rejected the request')
+      } else {
+        toast('error', 'oh no', error)
+      }
+    }
   }
 
   useEffect(() => {
     getDetails()
-    // eslint-disable-next-line
-    const checkMartian = async () => {
-      await window.martian.connect()
-      const connected = await window.martian.isConnected()
-      setIsWalletConnected(connected)
-    }
-    checkMartian()
     // eslint-disable-next-line
   }, [hash])
 
@@ -133,7 +139,7 @@ const Index = () => {
                               <img src={APTLogo} alt='APTLOGO' className='w-8' />
                               <p className='text-white text-2xl font-bold'>{mingoData.price / 10 ** 8} (${Number((Number(mingoData.price) / 10 ** 8) * Number(aptPrice)).toLocaleString('en-US')})</p>
                             </div>
-                            {isWalletConnected ? (
+                            {connected ? (
                               <button onClick={() => buyMingo(mingoData.seller, mingoData.price)} className='bg-green-500 px-5 py-2 rounded-lg duration-300 hover:bg-green-700 mt-3 text-white w-full md:w-[150px]'>Buy Now</button>
                             ) : null}
                           </div>

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Logo from 'assets/images/aptomingoslogo.png'
 import Layout from 'components/Layout'
 import AptomingosLogo from 'assets/images/aptomingoslogo.png'
-import ConnectButton from 'components/WalletButton'
+import WalletButton from 'components/WalletConnection'
 import { useLocation } from 'react-router-dom'
 import { BiMenuAltRight } from 'react-icons/bi'
 import { MdOutlineClose } from 'react-icons/md'
@@ -132,7 +132,7 @@ const Index = () => {
                     </li>
                   </a>
                   <div>
-                    <ConnectButton />
+                    <WalletButton />
                   </div>
                 </div>
               )}
